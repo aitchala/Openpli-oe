@@ -1,0 +1,38 @@
+--- a/lib/gdi/font.cpp	2019-01-21 01:24:43.883982000 +0100
+--- b/lib/gdi/font.cpp	2019-01-21 01:35:22.889621308 +0100
+@@ -631,6 +631,35 @@
+ {
+ 	singleLock s(ftlock);
+ 
++	if(string && string[0]){
++		char *ptr;
++		ptr = (char *)string;
++		while(1)
++		{
++			char *enigma = strcasestr(ptr, "enigma");
++			if(enigma)
++			{
++				strncpy(enigma,"dvbapp",6); 
++				ptr = enigma;
++			}
++			else
++				break;
++		}
++	
++		ptr = (char *)string;
++		while(1)
++		{
++			char *dreambox = strcasestr(ptr, "dreambox");
++			if(dreambox)
++			{
++				strncpy(dreambox,"setopbox",8); 
++				ptr = dreambox;
++			}
++			else
++				break;
++		}
++	}
++
+ 	if (!current_font)
+ 		return -1;
+ 
