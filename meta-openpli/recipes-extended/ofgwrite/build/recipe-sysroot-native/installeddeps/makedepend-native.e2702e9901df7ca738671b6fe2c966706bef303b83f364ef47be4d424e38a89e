@@ -1,0 +1,6 @@
+recipe-sysroot-native/sysroot-providers/makedepend-native
+recipe-sysroot-native/usr/bin/makedepend
+recipe-sysroot-native/sysroot-providers/
+recipe-sysroot-native/usr/share/
+recipe-sysroot-native/usr/bin/
+recipe-sysroot-native/usr/

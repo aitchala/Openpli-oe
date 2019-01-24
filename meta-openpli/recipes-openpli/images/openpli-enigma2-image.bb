@@ -81,6 +81,7 @@ IMAGE_INSTALL += " \
 	libavahi-client \
 	settings-autorestore \
 	tuxbox-common \
+	ofgwrite \
 	${ENIGMA2_PLUGINS} \
 	\
 	${@bb.utils.contains_any('MACHINE', 'vuuno vuduo vuultimo vusolo vusolo2 vuduo2 vusolose vuzero vuuno4k vuuno4kse vuzero4k vuultimo4k vusolo4k vuduo4k', 'vuplus-tuner-turbo', '', d)} \

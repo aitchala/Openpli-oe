@@ -1,0 +1,13 @@
+PN: ofgwrite
+PV: 1.0
+PR: r0
+PKGV: 1.0
+PKGR: r0
+LICENSE: GPLv2+
+DESCRIPTION: Tools for managing memory technology devices.
+SUMMARY: ofgwrite version 1.0-r0
+SECTION: base
+PKG_ofgwrite-locale: ofgwrite-locale
+FILES_ofgwrite-locale: /usr/share/locale
+FILES_INFO: {}
+PKGSIZE_ofgwrite-locale: 0

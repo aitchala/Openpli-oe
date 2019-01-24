@@ -9,7 +9,7 @@ DEPENDS = " \
 	freetype \
 	gettext-native \
 	jpeg \
-        libdreamdvd libdvbsi++ libfribidi libmad libpng libsigc++-2.0 giflib libxml2 \
+	libdreamdvd libdvbsi++ libfribidi libmad libpng libsigc++-2.0 giflib libxml2 \
 	openssl libudfread \
 	python-imaging python-twisted python-wifi \
 	swig-native \
@@ -33,6 +33,7 @@ RRECOMMENDS_${PN} = " \
 	hotplug-e2-helper \
 	glibc-gconv-utf-16 \
 	python-sendfile \
+	ofgwrite \
 	virtual/enigma2-mediaservice \
 	"
 
@@ -100,9 +101,9 @@ inherit gitpkgv pythonnative
 PV = "2.7+git${SRCPV}"
 PKGV = "2.7+git${GITPKGV}"
 
-ENIGMA2_BRANCH ?= "master"
+ENIGMA2_BRANCH ?= "develop"
 GITHUB_URI ?= "git://github.com"
-SRC_URI = " ${GITHUB_URI}/aitchala/enigma2-openpli-azboxminime.git;branch=${ENIGMA2_BRANCH} \
+SRC_URI = "${GITHUB_URI}/OpenPLi/${BPN}.git;branch=${ENIGMA2_BRANCH} \
             file://undefine-macro-HAVE_CONFIG_H.patch \ 
             file://set-default-debug-level-at-4.patch \
           "

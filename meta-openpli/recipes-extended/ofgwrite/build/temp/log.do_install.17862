@@ -1,0 +1,9 @@
+DEBUG: Executing python function extend_recipe_sysroot
+NOTE: Direct dependencies are ['/home/modiss/Openpli/openembedded-core/meta/recipes-core/glibc/glibc_2.28.bb:do_populate_sysroot', 'virtual:native:/home/modiss/Openpli/openembedded-core/meta/recipes-devtools/pseudo/pseudo_git.bb:do_populate_sysroot', '/home/modiss/Openpli/openembedded-core/meta/recipes-devtools/gcc/gcc-cross_8.2.bb:do_populate_sysroot', '/home/modiss/Openpli/openembedded-core/meta/recipes-devtools/gcc/gcc-runtime_8.2.bb:do_populate_sysroot', '/home/modiss/Openpli/openembedded-core/meta/recipes-devtools/quilt/quilt-native_0.65.bb:do_populate_sysroot']
+NOTE: Installed into sysroot: ['pseudo-native']
+NOTE: Skipping as already exists in sysroot: ['glibc', 'gcc-cross-aarch64', 'gcc-runtime', 'quilt-native', 'linux-libc-headers', 'libgcc', 'libmpc-native', 'autoconf-native', 'automake-native', 'mpfr-native', 'gmp-native', 'binutils-cross-aarch64', 'texinfo-dummy-native', 'xz-native', 'zlib-native', 'gnu-config-native', 'libtool-native', 'flex-native', 'm4-native', 'gettext-minimal-native']
+DEBUG: Python function extend_recipe_sysroot finished
+DEBUG: Executing shell function do_install
+DEBUG: Shell function do_install finished
+DEBUG: Executing shell function remove_libtool_la
+DEBUG: Shell function remove_libtool_la finished

@@ -1,0 +1,8 @@
+do_fetch (17510): log.do_fetch.17510
+do_prepare_recipe_sysroot (17540): log.do_prepare_recipe_sysroot.17540
+do_patch (17541): log.do_patch.17541
+do_configure (17830): log.do_configure.17830
+do_compile (17843): log.do_compile.17843
+do_install (17862): log.do_install.17862
+do_package (17977): log.do_package.17977
+do_package_qa (22699): log.do_package_qa.22699
