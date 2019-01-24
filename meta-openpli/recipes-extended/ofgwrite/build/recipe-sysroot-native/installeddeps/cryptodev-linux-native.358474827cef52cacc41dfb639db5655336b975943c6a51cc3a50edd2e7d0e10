@@ -1,6 +1,0 @@
-recipe-sysroot-native/sysroot-providers/cryptodev-linux-native
-recipe-sysroot-native/usr/include/crypto/cryptodev.h
-recipe-sysroot-native/usr/include/crypto/
-recipe-sysroot-native/sysroot-providers/
-recipe-sysroot-native/usr/include/
-recipe-sysroot-native/usr/

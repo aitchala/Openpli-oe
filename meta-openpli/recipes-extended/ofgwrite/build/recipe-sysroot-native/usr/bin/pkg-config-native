@@ -1,7 +1,0 @@
-#! /bin/sh
-
-PKG_CONFIG_PATH="/home/modiss/Openpli/meta-openpli/recipes-extended/ofgwrite//build//recipe-sysroot-native/usr/lib/pkgconfig:/home/modiss/Openpli/meta-openpli/recipes-extended/ofgwrite//build//recipe-sysroot-native/usr/share/pkgconfig"
-PKG_CONFIG_LIBDIR="/home/modiss/Openpli/meta-openpli/recipes-extended/ofgwrite//build//recipe-sysroot-native/usr/lib/pkgconfig"
-unset PKG_CONFIG_SYSROOT_DIR
-
-pkg-config "$@"

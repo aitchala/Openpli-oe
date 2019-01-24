@@ -1,6 +1,0 @@
-DEBUG: Executing python function clean_recipe_sysroot
-DEBUG: Python function clean_recipe_sysroot finished
-DEBUG: Executing python function do_fetch
-DEBUG: Executing python function base_do_fetch
-DEBUG: Python function base_do_fetch finished
-DEBUG: Python function do_fetch finished

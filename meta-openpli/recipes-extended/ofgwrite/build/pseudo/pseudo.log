@@ -1,6 +1,0 @@
-debug_logfile: fd 2
-pid 17864 [parent 17863], doing new pid setup and server start
-Setup complete, sending SIGUSR1 to pid 17863.
-db cleanup for server shutdown, 14:00:49.249
-memory-to-file backup complete, 14:00:49.250.
-db cleanup finished, 14:00:49.250
