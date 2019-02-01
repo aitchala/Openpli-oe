@@ -7,12 +7,13 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=7fbc338309ac38fefcd64b04bb903e34"
 
 DEPENDS = "glib-2.0-native gstreamer1.0 gstreamer1.0-plugins-base libdca"
 
-RREPLACES_${PN} = "gstreamer1.0-plugin-dvbmediasink"
+RREPLACES_${PN} = "gstreamer1.0-plugin-azbox-dvbmediasink"
 RCONFLICTS_${PN} = "gstreamer1.0-plugin-dvbmediasink"
 
 GSTVERSION = "1.0"
 
-SRC_URI = "git://github.com/dazulrich/gstreamer1.0-plugin-multibox-dvbmediasink.git;branch=oatv6-dev;protocol=https"
+#SRC_URI = "git://github.com/christophecvr/gstreamer1.0-plugin-multibox-dvbmediasink;protocol=https"
+SRC_URI = "git://github.com/christophecvr/gstreamer1.0-plugin-multibox-dvbmediasink;branch=openatv-dev;protocol=git"
 
 S = "${WORKDIR}/git"
 

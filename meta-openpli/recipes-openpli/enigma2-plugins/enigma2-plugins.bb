@@ -24,7 +24,11 @@ RRECOMMENDS_enigma2-plugin-systemplugins-blindscan = "virtual/blindscan-dvbs"
 RRECOMMENDS_enigma2-plugin-systemplugins-systemtime = "ntpdate"
 RRECOMMENDS_enigma2-plugin-extensions-transmission = "transmission transmission-client"
 
-inherit gitpkgv pythonnative pkgconfig
+PROVIDES += "\
+	${@bb.utils.contains("MACHINE_FEATURES", "transcoding","enigma2-plugin-systemplugins-transcodingsetup","",d)} \
+"
+
+inherit gitpkgv pythonnative pkgconfig gettext
 
 PV = "y-git${SRCPV}"
 PKGV = "y-git${GITPKGV}"
@@ -69,29 +73,21 @@ DEPENDS = " \
 	python-daap \
 	libcddb \
 	dvdbackup \
-	libtirpc \
 	"
-
-CFLAGS += "-I${STAGING_INCDIR}/tirpc"
 
 python populate_packages_prepend () {
     enigma2_plugindir = bb.data.expand('${libdir}/enigma2/python/Plugins', d)
 
-    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/[a-zA-Z0-9_]+.*$', 'enigma2-plugin-%s', '%s', recursive=True, match_path=True, prepend=True)
-    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/.*\.py$', 'enigma2-plugin-%s-src', '%s (source files)', recursive=True, match_path=True, prepend=True)
-    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/.*\.la$', 'enigma2-plugin-%s-dev', '%s (development)', recursive=True, match_path=True, prepend=True)
-    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/.*\.a$', 'enigma2-plugin-%s-staticdev', '%s (static development)', recursive=True, match_path=True, prepend=True)
-    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/(.*/)?\.debug/.*$', 'enigma2-plugin-%s-dbg', '%s (debug)', recursive=True, match_path=True, prepend=True)
-    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/.*\/.*\.po$', 'enigma2-plugin-%s-po', '%s (translations)', recursive=True, match_path=True, prepend=True)
+    do_split_packages(d, enigma2_plugindir, '(.*?/.*?)/.*', 'enigma2-plugin-%s', 'Enigma2 Plugin: %s', recursive=True, match_path=True, prepend=True, extra_depends='')
 
-    def getControlLines(mydir, package):
+    def getControlLines(mydir, d, package):
         import os
         try:
-            src = open(mydir + package + "/CONTROL/control").read()
-        except Exception as ex:
-            bb.note("Failed to get control lines for package '%s': %s" % (package, ex))
+            src = open(mydir + package + "/CONTROL/control")
+        except:
+            bb.note("Failed to get control lines for package '%s'" % (package))
             return
-        for line in src.split("\n"):
+        for line in src:
             full_package = "enigma2-plugin-extensions-" + package
             if line.startswith('Package: '):
                 full_package = line[9:]
@@ -119,17 +115,23 @@ python populate_packages_prepend () {
             elif line.startswith('Maintainer: '):
                 d.setVar('MAINTAINER_' + full_package, line[12:])
 
-
-    mydir = d.getVar('D') + "/../git/"
-    for package in d.getVar('PACKAGES').split():
-        getControlLines(mydir, package.split('-')[-1])
+    mydir = d.getVar('D', True) + "/../git/"
+    for package in d.getVar('PACKAGES', True).split():
+        getControlLines(mydir, d, package.split('-')[-1])
 }
 
 do_install_append() {
 	# remove unused .pyc files
-	find ${D}${libdir}/enigma2/python/ -name '*.pyc' -exec rm {} \;
+	find ${D}/usr/lib/enigma2/python/ -name '*.pyc' -exec rm {} \;
 	# remove leftover webinterface garbage
-	rm -rf ${D}${libdir}/enigma2/python/Plugins/Extensions/WebInterface
+	rm -rf ${D}/usr/lib/enigma2/python/Plugins/Extensions/WebInterface
+}
+
+python populate_packages_prepend() {
+    enigma2_plugindir = bb.data.expand('${libdir}/enigma2/python/Plugins', d)
+    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/.*\.la$', 'enigma2-plugin-%s-dev', '%s (development)', recursive=True, match_path=True, prepend=True)
+    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/.*\.a$', 'enigma2-plugin-%s-staticdev', '%s (static development)', recursive=True, match_path=True, prepend=True)
+    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/(.*/)?\.debug/.*$', 'enigma2-plugin-%s-dbg', '%s (debug)', recursive=True, match_path=True, prepend=True)
 }
 
 # Nothing of this recipe should end up in sysroot, so blank it away.

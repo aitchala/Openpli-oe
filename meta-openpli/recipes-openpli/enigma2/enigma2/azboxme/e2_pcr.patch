@@ -1,0 +1,15 @@
+diff -git a/lib/service/servicedvb.cpp b/lib/service/servicedvb.cpp
+--- a/lib/service/servicedvb.cpp	2018-12-19 17:43:35.000000000 +0100
++++ b/lib/service/servicedvb.cpp	2019-01-09 00:47:04.874195538 +0100
+@@ -2946,10 +2946,7 @@
+ #if HAVE_AMLOGIC
+ 		m_decoder->setSyncPCR(pcrpid);
+ #else
+-		if (!(m_is_pvr || m_is_stream || m_timeshift_active))
+-			m_decoder->setSyncPCR(pcrpid);
+-		else
+-			m_decoder->setSyncPCR(-1);
++                m_decoder->setSyncPCR(pcrpid);
+ #endif
+ 
+ 		if (m_decoder_index == 0)

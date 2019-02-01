@@ -12,16 +12,18 @@ DVBPROVIDER = "kernel"
 
 
 MACHINE_EXTRA_RRECOMMENDS += " \
-    gstreamer1.0-plugin-azbox-dvbmediasink \
     azbox-compat \
     kernel-module-cifs \
     "
 
-DVBMEDIASINK_CONFIG = "--with-wma --with-wmv --with-pcm --with-dtsdownmix "
+GST_VERSION = "1.0"
+
+DVBMEDIASINK_CONFIG = "--with-wma --with-wmv --with-pcm --with-dtsdownmix --with-azbox"
 
 MACHINE_FEATURES += " kernel26 alsa usbhost wifi nl80211 3dtv switchoff lpcm textlcd 32bpp hdtv dvbapi5 dvb-c blindscan-dvbs boxmodel HDMI"
 
 PREFERRED_VERSION_linux-azbox = "3.9.2"
+PREFERRED_VERSION_linux-libc-headers = "3.3"
 
 GLIBC_EXTRA_OECONF = "--with-tls --with-__thread"
 
@@ -31,6 +33,7 @@ PREFERRED_PROVIDER_virtual/blindscan-dvbs = "azbox-blindscan-dvbs-utils"
 require conf/machine/include/tune-mips32.inc
 require conf/machine/include/soc-family.inc
 include conf/machine/include/autoload-filesystems.inc
+
 
 SYSVINIT_ENABLED_GETTYS = ""
 
