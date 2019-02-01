@@ -99,8 +99,8 @@ RDEPENDS_${PN}-build-dependencies = "\
 
 inherit gitpkgv pythonnative upx_compress
 
-#PV = "2.7+git${SRCPV}"
-#PKGV = "2.7+git${GITPKGV}"
+PV = "2.7+git${SRCPV}"
+PKGV = "2.7+git${GITPKGV}"
 
 ENIGMA2_BRANCH ?= "develop"
 GITHUB_URI ?= "git://github.com"
