@@ -102,17 +102,9 @@ inherit gitpkgv pythonnative upx_compress
 #PV = "2.7+git${SRCPV}"
 #PKGV = "2.7+git${GITPKGV}"
 
-#ENIGMA2_BRANCH ?= "develop"
-#GITHUB_URI ?= "git://github.com"
-#SRC_URI = "${GITHUB_URI}/OpenPLi/${BPN}.git;branch=${ENIGMA2_BRANCH}"
-
-
-PV = "develop+git${SRCPV}"
-PKGV = "develop+git${GITPKGV}"
-
-SRC_URI = "git://github.com/OpenVisionE2/enigma2-openvision.git;branch=develop;name=enigma2"
-
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+ENIGMA2_BRANCH ?= "develop"
+GITHUB_URI ?= "git://github.com"
+SRC_URI = "${GITHUB_URI}/OpenPLi/${BPN}.git;branch=${ENIGMA2_BRANCH}"
 
 SRC_URI_append_azboxhd = " \
 	file://rc.png \
