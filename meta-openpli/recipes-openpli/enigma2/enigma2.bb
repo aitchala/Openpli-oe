@@ -99,15 +99,18 @@ RDEPENDS_${PN}-build-dependencies = "\
 
 inherit gitpkgv pythonnative upx_compress
 
-PV = "2.7+git${SRCPV}"
-PKGV = "2.7+git${GITPKGV}"
+#PV = "2.7+git${SRCPV}"
+#PKGV = "2.7+git${GITPKGV}"
 
 ENIGMA2_BRANCH ?= "develop"
 GITHUB_URI ?= "git://github.com"
 SRC_URI = "${GITHUB_URI}/OpenPLi/${BPN}.git;branch=${ENIGMA2_BRANCH}"
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 2bb268e1407b4a6106fe135c0614a72b58b683c5
 SRC_URI_append_azboxhd = " \
 	file://rc.png \
 	file://rcpositions.xml \

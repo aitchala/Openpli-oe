@@ -1,0 +1,90 @@
+diff -Naur enigma2-PLi/lib/dvb/amldecoder.cpp enigma2-PersianPrince/lib/dvb/amldecoder.cpp
+--- enigma2-PLi/lib/dvb/amldecoder.cpp	2018-08-04 13:20:23.000000000 +0430
++++ enigma2-PersianPrince/lib/dvb/amldecoder.cpp	2018-08-06 13:38:00.518480530 +0430
+@@ -222,8 +222,15 @@
+ 				m_codec.video_type = VFORMAT_MPEG4; //maybe?
+ 				t = "MPEG4 Part2";
+ 				break;
++#if defined(__aarch64__)
++			case H265_HEVC:
++				m_codec.video_type = VFORMAT_HEVC; //maybe?
++				t = "H265 HEVC";
++				break;
++#endif
+ 		}
+ 		eDebug("[eAMLTSMPEGDecoder::setVideoPID] vpid=%d, type=%d %s", vpid, type, t.c_str());
++		aml_change_vpid(vpid, m_codec.video_type);
+ 	}
+ 	return 0;
+ }
+@@ -249,6 +256,10 @@
+ 				m_codec.audio_type = AFORMAT_AC3;
+ 				t = "AC3";
+ 				break;
++			case aDDP:
++				m_codec.audio_type = AFORMAT_AC3;
++				t = "AC3";
++				break;
+ 			case aAAC:
+ 				m_codec.audio_type = AFORMAT_AAC;
+ 				t = "AAC";
+diff -Naur enigma2-PLi/lib/dvb/amldecoder.h enigma2-PersianPrince/lib/dvb/amldecoder.h
+--- enigma2-PLi/lib/dvb/amldecoder.h	2018-08-04 13:20:23.000000000 +0430
++++ enigma2-PersianPrince/lib/dvb/amldecoder.h	2018-08-06 11:46:44.329339696 +0430
+@@ -89,7 +89,7 @@
+ 	void *adec_handle;
+ 
+ public:
+-	enum { aMPEG, aAC3, aDTS, aAAC, aAACHE, aLPCM, aDTSHD, aDDP, MPEG2 = 0, MPEG4_H264, MPEG1, MPEG4_Part2, VC1, VC1_SM };
++	enum { aMPEG, aAC3, aDTS, aAAC, aAACHE, aLPCM, aDTSHD, aDDP, MPEG2 = 0, MPEG4_H264, MPEG1, MPEG4_Part2, VC1, VC1_SM, H265_HEVC };
+ 	enum { pidNone = -1 };
+ 	eAMLTSMPEGDecoder(eDVBDemux *demux, int decoder);
+ 	virtual ~eAMLTSMPEGDecoder();
+diff -Naur enigma2-PLi/lib/service/servicedvb.cpp enigma2-PersianPrince/lib/service/servicedvb.cpp
+--- enigma2-PLi/lib/service/servicedvb.cpp	2018-08-04 13:20:23.000000000 +0430
++++ enigma2-PersianPrince/lib/service/servicedvb.cpp	2018-08-06 13:40:47.844944025 +0430
+@@ -38,6 +38,10 @@
+ #include <sstream>
+ #include <iomanip>
+ 
++extern "C" {
++#include <codec.h>
++}
++
+ class eStaticServiceDVBInformation: public iStaticServiceInformation
+ {
+ 	DECLARE_REF(eStaticServiceDVBInformation);
+@@ -1368,6 +1372,12 @@
+ 		type = eDVBServicePMTHandler::streamclient;
+ 	}
+ 
++	if(m_is_stream || m_is_pvr)
++	{
++			eDebug("[eDVBServicePlay] start m_is_pvr %d", m_is_pvr);
++			aml_set_demux2_source();
++	}
++
+ 	m_first_program_info = 1;
+ 	ePtr<iTsSource> source = createTsSource(service, packetsize);
+ 	m_service_handler.tuneExt(service, source, service.path.c_str(), m_cue, false, m_dvb_service, type, scrambled);
+diff --git a/lib/dvb/demux.cpp b/lib/dvb/demux.cpp
+index 44dc2ee45..6b7e12fb4 100644
+--- a/lib/dvb/demux.cpp
++++ b/lib/dvb/demux.cpp
+@@ -111,8 +111,15 @@ RESULT eDVBDemux::setSourceFrontend(int fenum)
+ 	if (fd < 0) return -1;
+ 	int n = DMX_SOURCE_FRONT0 + fenum;
+ 	int res = ::ioctl(fd, DMX_SET_SOURCE, &n);
+-	if (res)
++	if (res){
+ 		eDebug("[eDVBDemux] DMX_SET_SOURCE Frontend%d failed: %m", fenum);
++		/** FIXME: gg begin dirty hack  */
++		eDebug("[eDVBDemux] Ignoring due to limitation to one frontend for each adapter and missing ioctl....");
++		source = fenum;
++		res = 0;
++		/** FIXME: gg end dirty hack  */
++	}
++
+ 	else
+ 		source = fenum;
+ 	::close(fd);
