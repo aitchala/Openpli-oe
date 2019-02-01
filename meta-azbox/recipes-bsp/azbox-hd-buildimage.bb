@@ -1,7 +1,7 @@
 SUMMARY = "create Azboxhd patch.e2 images"
 SECTION = "console/utils"
 LICENSE = "CLOSED"
-#require conf/license/license-close.inc
+require conf/license/license-close.inc
 
 PV="1.3"
 PR = "r2"

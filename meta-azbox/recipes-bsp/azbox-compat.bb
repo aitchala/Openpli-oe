@@ -3,7 +3,7 @@ SECTION = "base"
 PRIORITY = "required"
 LICENSE = "CLOSED"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-#require conf/license/license-close.inc
+require conf/license/license-close.inc
 
 PV = "1.0"
 PR = "r6"

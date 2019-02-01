@@ -43,6 +43,7 @@ PYTHON_RDEPS = " \
 	python-core \
 	python-crypt \
 	python-fcntl \
+	python-importlib \
 	python-lang \
 	python-netclient \
 	python-netserver \
@@ -92,21 +93,43 @@ RDEPENDS_enigma2-plugin-systemplugins-hotplug = "hotplug-e2-helper"
 RDEPENDS_${PN}-build-dependencies = "\
 	aio-grab \
 	dvd+rw-tools dvdauthor mjpegtools cdrkit python-imaging ${DEMUXTOOL} \
-	wpa-supplicant python-wifi \
+	wpa-supplicant wireless-tools python-wifi \
 	python-twisted-web \
 	"
 
-inherit gitpkgv pythonnative
+inherit gitpkgv pythonnative upx_compress
 
-PV = "2.7+git${SRCPV}"
-PKGV = "2.7+git${GITPKGV}"
+#PV = "2.7+git${SRCPV}"
+#PKGV = "2.7+git${GITPKGV}"
 
-ENIGMA2_BRANCH ?= "develop"
-GITHUB_URI ?= "git://github.com"
-SRC_URI = "${GITHUB_URI}/OpenPLi/${BPN}.git;branch=${ENIGMA2_BRANCH} \
-            file://undefine-macro-HAVE_CONFIG_H.patch \ 
-            file://set-default-debug-level-at-4.patch \
-          "
+#ENIGMA2_BRANCH ?= "develop"
+#GITHUB_URI ?= "git://github.com"
+#SRC_URI = "${GITHUB_URI}/OpenPLi/${BPN}.git;branch=${ENIGMA2_BRANCH}"
+
+
+PV = "develop+git${SRCPV}"
+PKGV = "develop+git${GITPKGV}"
+
+SRC_URI = "git://github.com/OpenVisionE2/enigma2-openvision.git;branch=develop;name=enigma2"
+
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+
+SRC_URI_append_azboxhd = " \
+	file://rc.png \
+	file://rcpositions.xml \
+        file://e2_pcr.patch \
+        file://azbox_lcdchar_HD.patch \
+	"
+SRC_URI_append_azboxminime = " \
+	file://rc.png \
+	file://rcpositions.xml \
+        file://e2_pcr.patch \
+	" 
+SRC_URI_append_azboxme = " \
+	file://rc.png \
+	file://rcpositions.xml \
+        file://e2_pcr.patch \
+	" 
 
 LDFLAGS_prepend = " -lxml2 "
 
@@ -118,7 +141,7 @@ PACKAGES =+ "${PN}-src"
 PACKAGES += "${PN}-meta ${PN}-build-dependencies"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-inherit autotools pkgconfig
+inherit autotools pkgconfig upx_compress
 
 PACKAGES =+ "enigma2-fonts"
 PKGV_enigma2-fonts = "2018.08.15"
@@ -173,6 +196,32 @@ FILES_${PN}-src = "\
 	/usr/lib/enigma2/python/*/*/*.py \
 	/usr/lib/enigma2/python/*/*/*/*.py \
 	"
+
+do_openpli_branding() {
+	if [ -n "${BRANDINGDIR}" -a -d "${BRANDINGDIR}/enigma2" ] ; then
+		cp -r --preserve=mode,links ${BRANDINGDIR}/enigma2/* ${S}/data/
+	fi
+}
+
+addtask openpli_branding after do_unpack before do_configure
+
+do_install_append_azboxme() {
+	install -d ${D}/usr/share/enigma2/rc_models/azme
+	install -m 0644 ${WORKDIR}/rc.png ${D}/usr/share/enigma2/rc_models/azme
+	install -m 0644 ${WORKDIR}/rcpositions.xml ${D}/usr/share/enigma2/rc_models/azme
+}
+
+do_install_append_azboxminime() {
+	install -d ${D}/usr/share/enigma2/rc_models/azme
+	install -m 0644 ${WORKDIR}/rc.png ${D}/usr/share/enigma2/rc_models/azme
+	install -m 0644 ${WORKDIR}/rcpositions.xml ${D}/usr/share/enigma2/rc_models/azme
+}
+
+do_install_append_azboxhd() {
+	install -d ${D}/usr/share/enigma2/rc_models/azhd
+	install -m 0644 ${WORKDIR}/rc.png ${D}/usr/share/enigma2/rc_models/azhd
+	install -m 0644 ${WORKDIR}/rcpositions.xml ${D}/usr/share/enigma2/rc_models/azhd
+}
 
 do_install_append() {
 	install -d ${D}/usr/share/keymaps

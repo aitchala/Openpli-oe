@@ -3,40 +3,36 @@ SECTION = "kernel"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/linux-${KV}/COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-PACKAGE_ARCH = "${MACHINE_ARCH}"
+MACHINE_KERNEL_PR_append = ".4"
 
-COMPATIBLE_MACHINE = "(azboxhd|azboxme|azboxminime)"
-
+KERNEL_IMAGE_MAXSIZE_azboxhd = "6815744"
+#KERNEL_IMAGE_MAXSIZE_azboxme = "6815744"
+#KERNEL_IMAGE_MAXSIZE_azboxminime = "6815744"
 
 DEPENDS = "genromfs-native virtual/${TARGET_PREFIX}gcc"
 
 inherit kernel machine_kernel_pr
 
-PKG_${KERNEL_PACKAGE_NAME}-base = "${KERNEL_PACKAGE_NAME}-base"
-PKG_${KERNEL_PACKAGE_NAME}-image = "${KERNEL_PACKAGE_NAME}-image"
-RPROVIDES_${KERNEL_PACKAGE_NAME}-base = "kernel-${KERNEL_VERSION}"
-RPROVIDES_${KERNEL_PACKAGE_NAME}-image = "kernel-image-${KERNEL_VERSION}"
+PKG_kernel-base = "kernel-base"
+PKG_kernel-image = "kernel-image"
+RPROVIDES_kernel-base = "kernel-${KERNEL_VERSION}"
+RPROVIDES_kernel-image = "kernel-image-${KERNEL_VERSION}"
 ALLOW_EMPTY_kernel-dev = "1"
+
+export OS = "Linux"
+KERNEL_OBJECT_SUFFIX = "ko"
+KERNEL_IMAGETYPE = "zbimage-linux-xload"
+KERNEL_IMAGEDEST = "tmp"
 
 S = "${WORKDIR}/linux-${KV}"
 B = "${WORKDIR}/build"
 
-export OS = "Linux"
-KERNEL_OBJECT_SUFFIX = "ko"
-KERNEL_OUTPUT = "zbimage-linux-xload"
-KERNEL_IMAGETYPE = "zbimage-linux-xload"
-KERNEL_IMAGEDEST = "tmp"
-
-FILES_${KERNEL_PACKAGE_NAME}-image = "/boot/zbimage-linux-xload"
-
 CFLAGS_prepend = "-I${WORKDIR} "
-
 EXTRA_OEMAKE =+ " CONFIG_INITRAMFS_SOURCE=${STAGING_KERNEL_DIR}/initramfs"
 
 do_configure_prepend() {
-	oe_machinstall -m 0644 ${WORKDIR}/defconfig ${S}/.config
-	sed -i "s#:= usr/initramfs_default_node_list#:= \$(srctree)/usr/initramfs_default_node_list#" ${STAGING_KERNEL_DIR}/usr/Makefile
-	sed -i "s#\$(srctree)/arch/mips/boot/#\$(obj)/#" ${STAGING_KERNEL_DIR}/arch/mips/boot/Makefile
+    sed -i "s#:= usr/initramfs_default_node_list#:= \$(srctree)/usr/initramfs_default_node_list#" ${STAGING_KERNEL_DIR}/usr/Makefile
+    sed -i "s#\$(srctree)/arch/mips/boot/#\$(obj)/#" ${STAGING_KERNEL_DIR}/arch/mips/boot/Makefile
 }
 
 kernel_do_compile_prepend() {
