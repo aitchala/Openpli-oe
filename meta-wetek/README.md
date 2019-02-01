@@ -1,2 +1,2 @@
 # meta-wetek
-WeTek BSP layer for Open Vision
+WeTek BSP layer for Open Pli
