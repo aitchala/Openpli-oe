@@ -1,0 +1,11 @@
+--- a/lib/dvb/decoder.cpp       2019-02-01 22:37:14.228997000 +0100
++++ b/lib/dvb/decoder.cpp	2019-02-01 23:29:31.222952296 +0100
+@@ -24,6 +24,8 @@
+ 
+ DEFINE_REF(eDVBAudio);
+ 
++#define AUDIO_GET_PTS              _IOR('o', 19, __u64)
++#define VIDEO_GET_FRAME_RATE       _IOR('o', 56, unsigned int)
+ eDVBAudio::eDVBAudio(eDVBDemux *demux, int dev)
+ 	:m_demux(demux), m_dev(dev)
+ {
