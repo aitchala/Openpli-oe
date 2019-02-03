@@ -3,15 +3,20 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=2c1c00f9d3ed9e24fa69b932b7e7aff2"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
+SRCREV = "${AUTOREV}"
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
-PR = "r0"
 
 SRC_URI = " \
     git://github.com/oe-alliance/satip-client.git;protocol=git;branch=mis \
     file://satipclient.sh \
 "
-#SRC_URI += "file://auto-detect-and-avoi-ioct-conflicts.patch"
+
+SRC_URI_arm = " \
+    git://github.com/oe-alliance/satip-client.git;protocol=git;branch=mis \
+    file://satipclient.sh \
+    file://0001-auto-detect-and-avoid-ioctl-conflicts.patch \
+"
 
 S = "${WORKDIR}/git"
 
@@ -27,4 +32,5 @@ do_install_append() {
 
 EXTRA_OECONF = " \
     --with-boxtype=${MACHINE} \
+    --with-machinebuild="${MACHINEBUILD}" \
     "

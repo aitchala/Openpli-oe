@@ -1,0 +1,13 @@
+--- a/gstdvbaudiosink.c	2019-02-01 14:03:20.770708000 +0100
++++ b/gstdvbaudiosink.c	2019-02-02 00:21:32.261492600 +0100
+@@ -84,7 +84,7 @@
+ 
+ 
+ #include "gstdvbsink-marshal.h"
++#define AUDIO_GET_PTS              _IOR('o', 19, __u64)
+ GST_DEBUG_CATEGORY_STATIC(dvbaudiosink_debug);
+ #define GST_CAT_DEFAULT dvbaudiosink_debug
+
+ enum
+ {
+ 	PROP_0,
