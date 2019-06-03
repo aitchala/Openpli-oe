@@ -9,7 +9,7 @@ DEPENDS = " \
 	freetype \
 	gettext-native \
 	jpeg \
-	libdreamdvd libdvbsi++ libfribidi libmad libpng libsigc++-2.0 giflib libxml2 \
+	libdreamdvd libdvbsi++ fribidi libmad libpng libsigc++-2.0 giflib libxml2 \
 	openssl libudfread \
 	python-imaging python-twisted python-wifi \
 	swig-native \
@@ -43,7 +43,6 @@ PYTHON_RDEPS = " \
 	python-core \
 	python-crypt \
 	python-fcntl \
-	python-importlib \
 	python-lang \
 	python-netclient \
 	python-netserver \
@@ -93,7 +92,7 @@ RDEPENDS_enigma2-plugin-systemplugins-hotplug = "hotplug-e2-helper"
 RDEPENDS_${PN}-build-dependencies = "\
 	aio-grab \
 	dvd+rw-tools dvdauthor mjpegtools cdrkit python-imaging ${DEMUXTOOL} \
-	wpa-supplicant wireless-tools python-wifi \
+	wpa-supplicant python-wifi \
 	python-twisted-web \
 	"
 

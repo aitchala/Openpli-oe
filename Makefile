@@ -54,6 +54,7 @@ BBLAYERS ?= \
 	$(CURDIR)/meta-azbox \
 	$(CURDIR)/meta-vuplus \
 	$(CURDIR)/meta-wetek \
+        $(CURDIR)/meta-blackhole \
 	$(CURDIR)/meta-local
         
 

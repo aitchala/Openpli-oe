@@ -1,7 +1,6 @@
 require conf/license/openpli-gplv2.inc
 require softcam.inc
 inherit cmake
-inherit gitpkgv
 
 DESCRIPTION = "OScam ${PV} Open Source Softcam"
 LICENSE = "GPLv3"
@@ -13,11 +12,12 @@ SRC_URI = "git://github.com/OpenVisionE2/oscam.git;protocol=https"
 
 DEPENDS = "libusb openssl"
 
-S = "${WORKDIR}/git"
+S = "${WORKDIR}/trunk"
 B = "${S}"
+
 CAMNAME = "oscam"
-CAMSTART = "/usr/bin/oscam --wait 0 --config-dir /etc/tuxbox/config/oscam --daemon --pidfile /tmp/oscam.pid --restart 2 --utf8"
-CAMSTOP = "kill \`cat /tmp/oscam.pid\` 2> /dev/null"
+CAMSTART = "exec start-stop-daemon -S -x /usr/bin/oscam -- -b -r 2 -c /etc/tuxbox/config/oscam"
+CAMSTOP =  "exec start-stop-daemon -K -R 2 -x /usr/bin/oscam"
 
 SRC_URI += " \
 	file://oscam.conf \
@@ -26,9 +26,9 @@ SRC_URI += " \
 	file://oscam.user \
 	file://oscam.provid"
 
-CONFFILES = "/etc/tuxbox/config/oscam/oscam.conf /etc/tuxbox/config/oscam/oscam.server /etc/tuxbox/config/oscam/oscam.srvid /etc/tuxbox/config/oscam/oscam.user /etc/tuxbox/config/oscam/oscam.provid"
+CONFFILES = "${sysconfdir}/tuxbox/config/oscam/oscam.conf ${sysconfdir}/tuxbox/config/oscam/oscam.server ${sysconfdir}/tuxbox/config/oscam/oscam.srvid ${sysconfdir}/tuxbox/config/oscam/oscam.user ${sysconfdir}/tuxbox/config/oscam/oscam.provid"
 
-FILES_${PN} = "/usr/bin/oscam /etc/tuxbox/config/oscam/* /etc/init.d/softcam.oscam"
+FILES_${PN} = "${bindir}/oscam ${sysconfdir}/tuxbox/config/oscam/* ${sysconfdir}/init.d/softcam.oscam"
 
 EXTRA_OECMAKE += "\
 	-DOSCAM_SYSTEM_NAME=Tuxbox \
@@ -38,12 +38,18 @@ EXTRA_OECMAKE += "\
 	-DSTATIC_LIBUSB=1 \
 	-DWITH_SSL=1 \
 	-DIPV6SUPPORT=1 \
-	-DCLOCKFIX=0 \
-	-DHAVE_PCSC=0"
+	-DHAVE_PCSC=1 \
+	-DCARDREADER_SMARGO=1 \
+	-DCARDREADER_PCSC=1 \
+	-DCW_CYCLE_CHECK=1 \
+	-DCS_CACHEEX=1 \
+	-DMODULE_CONSTCW=1 \
+	"
 
 do_install() {
-	install -d ${D}/etc/tuxbox/config/oscam
-	install -m 0644 ${WORKDIR}/oscam.* ${D}/etc/tuxbox/config/oscam/
-	install -d ${D}/usr/bin
-	install -m 0755 ${B}/oscam ${D}/usr/bin
+	install -d ${D}${sysconfdir}/tuxbox/config/oscam
+	install -m 0644 ${WORKDIR}/oscam.* ${D}${sysconfdir}/tuxbox/config/oscam/
+	install -d ${D}${bindir}
+	install -m 0755 ${B}/oscam ${D}${bindir}
 }
+
